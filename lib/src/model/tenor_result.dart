@@ -39,6 +39,19 @@ class TenorResult extends Equatable {
 
   static TenorResult fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
+
+    Map<String, dynamic> media;
+
+    dynamic rawMedia = map['media'];
+
+    if (rawMedia == null) {
+      media = <String, dynamic>{};
+    } else if (rawMedia is List && rawMedia.isNotEmpty) {
+      media = rawMedia[0];
+    } else {
+      media = rawMedia;
+    }
+
     return TenorResult(
       hasCaption: map['hascaption'] ?? false,
       hasaudio: map['hasaudio'] ?? false,
@@ -48,10 +61,7 @@ class TenorResult extends Equatable {
       created: '${map['created']}',
       url: map['url'],
       itemurl: map['itemurl'],
-      media: TenorGif.fromMap((map['media'] != null &&
-              (map['media'] is List && map['media'].length != 0))
-          ? map['media'][0]
-          : <String, dynamic>{}),
+      media: TenorGif.fromMap(media),
     );
   }
 
